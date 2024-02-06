@@ -1,19 +1,19 @@
 import { useState } from 'react'
 import './App.css'
-
 import Card from './components/Card'
 import getKeys from './keys'
-import Imagefetch from './components/Imagefetch'
+
 
 function App() {
   const champions = getKeys(12);
 
   return (
     <>
-    
-      {Object.keys(champions).map((index) => {
-        return <Imagefetch name={`${champions[index]}`} />
-      })}
+      <h2>Champion Data</h2>
+      <Card names={champions} />
+      {/* {Object.keys(champions).map((index) => {
+        return <Card name={`${champions[index]}`} />
+      })} */}
 
 
     </>
@@ -21,3 +21,7 @@ function App() {
 }
 
 export default App
+
+
+
+// {<Card names={champions} />}
