@@ -2,6 +2,12 @@ import { useState, useEffect } from "react";
 
 export default function Card(props) {
   const [championData, setChampionData] = useState(null);
+  const [memory, setMemory] = useState(
+    {
+      count: 0,
+      memoryArray: []
+    }
+  );
 
   const version = '14.2.1'; 
 
@@ -23,50 +29,54 @@ export default function Card(props) {
     fetchData();
   }, []);
 
-  // return (
-  //   <div>
-  //   {championData ? (
-  //     <div>
-  //       <h2>Champion Data</h2>
-  //       <img src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${props.name}_0.jpg`} />
-  //       <p>
-  //         {JSON.stringify(championData.data[props.name].name, null, 0).replace(/^"+|"+$/g, "") + ", "}
-  //         {JSON.stringify(championData.data[props.name].title, null, 0).replace(/^"+|"+$/g, "")}
-  //       </p>
-  //     </div>
-  //   ) : (
-  //     <p>Loading...</p>
-  //   )}
-  // </div>
-  // )
-  return (
-    <ul>
-    {Object.keys(props.names).map((index) => {
-      return (
-        <li key={props.names[index]}>
-          {championData ? (
-            <div>
-              <img src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${props.names[index]}_0.jpg`} />
-              <p>
-                {JSON.stringify(championData.data[props.names[index]].name, null, 0).replace(/^"+|"+$/g, "") + ", "}
-                {JSON.stringify(championData.data[props.names[index]].title, null, 0).replace(/^"+|"+$/g, "")}
-              </p>
-            </div>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </li>
-      )
-    
-    })}
-
-    </ul>
-  )
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+  };
 
   
 
+  const memoryGame = (event) => {
+    let newMemory = event.target.parentElement.parentElement.getAttribute('class');
+
+    if (newMemory in memory.memoryArray) {
+      setMemory({
+        count: 0,
+        memoryArray: []
+      })
+    } else {
+      setMemory({
+        count: memory.count + 1,
+        memoryArray: [...memory.memoryArray, newMemory]
+      })
+    }
+    
+    console.log(memory.memoryArray)
+  };
+
+  return (
+    <ul>
+      {shuffleArray(Object.keys(props.names)).map((index) => {
+        return (
+          <li className={props.names[index]} onClick={memoryGame} key={props.names[index]}>
+            {championData ? (
+              <div> 
+                <img src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${props.names[index]}_0.jpg`} />
+                <p>
+                  {JSON.stringify(championData.data[props.names[index]].name, null, 0).replace(/^"+|"+$/g, "") + ", "}
+                  {JSON.stringify(championData.data[props.names[index]].title, null, 0).replace(/^"+|"+$/g, "")}
+                </p>
+              </div>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </li>
+        )
+      })}
+    </ul>
+  )
 
 }
-
-
-
