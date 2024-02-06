@@ -14,6 +14,7 @@ export default function Imagefetch(props) {
         }
         const data = await response.json();
         setChampionData(data);
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -21,11 +22,6 @@ export default function Imagefetch(props) {
 
     fetchData();
   }, []);
-  
-
-
-
-
 
   return (
     <div>
@@ -33,7 +29,10 @@ export default function Imagefetch(props) {
       <div>
         <h2>Champion Data</h2>
         <img src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${props.name}_0.jpg`} />
-        <pre>{JSON.stringify(championData.data[props.name], null, 1)}</pre>
+        <p>
+          {JSON.stringify(championData.data[props.name].name, null, 0).replace(/^"+|"+$/g, "") + ", "}
+          {JSON.stringify(championData.data[props.name].title, null, 0).replace(/^"+|"+$/g, "")}
+        </p>
       </div>
     ) : (
       <p>Loading...</p>
