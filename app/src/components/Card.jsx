@@ -4,6 +4,7 @@ export default function Card(props) {
   const [championData, setChampionData] = useState(null);
   const [memory, setMemory] = useState(
     {
+      bestScore: 0,
       count: 0,
       memoryArray: []
     }
@@ -32,25 +33,22 @@ export default function Card(props) {
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+      [array[i], array[j]] = [array[j], array[i]]; 
     }
     return array;
   };
-
-  let bestScore = 0;
-
   
-
   const memoryGame = (event) => {
     let newMemory = event.target.parentElement.parentElement.getAttribute('class');
 
     if (memory.memoryArray.includes(newMemory)) {
-      setMemory({
+      setMemory({...memory,
         count: 0,
         memoryArray: []
       })
     } else {
       setMemory({
+        bestScore: Math.max(memory.count + 1, memory.bestScore),
         count: memory.count + 1,
         memoryArray: [...memory.memoryArray, newMemory]
       })
@@ -62,7 +60,7 @@ export default function Card(props) {
   return (
     <>
       <div>
-        Current Score: {memory.count} Best Score: {memory.count}
+        Current Score: {memory.count} Best Score: {memory.bestScore}
         
       </div>
       <ul>
