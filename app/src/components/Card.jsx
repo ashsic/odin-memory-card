@@ -37,12 +37,14 @@ export default function Card(props) {
     return array;
   };
 
+  let bestScore = 0;
+
   
 
   const memoryGame = (event) => {
     let newMemory = event.target.parentElement.parentElement.getAttribute('class');
 
-    if (newMemory in memory.memoryArray) {
+    if (memory.memoryArray.includes(newMemory)) {
       setMemory({
         count: 0,
         memoryArray: []
@@ -54,29 +56,35 @@ export default function Card(props) {
       })
     }
     
-    console.log(memory.memoryArray)
+
   };
 
   return (
-    <ul>
-      {shuffleArray(Object.keys(props.names)).map((index) => {
-        return (
-          <li className={props.names[index]} onClick={memoryGame} key={props.names[index]}>
-            {championData ? (
-              <div> 
-                <img src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${props.names[index]}_0.jpg`} />
-                <p>
-                  {JSON.stringify(championData.data[props.names[index]].name, null, 0).replace(/^"+|"+$/g, "") + ", "}
-                  {JSON.stringify(championData.data[props.names[index]].title, null, 0).replace(/^"+|"+$/g, "")}
-                </p>
-              </div>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </li>
-        )
-      })}
-    </ul>
+    <>
+      <div>
+        Current Score: {memory.count} Best Score: {memory.count}
+        
+      </div>
+      <ul>
+        {shuffleArray(Object.keys(props.names)).map((index) => {
+          return (
+            <li className={props.names[index]} onClick={memoryGame} key={props.names[index]}>
+              {championData ? (
+                <div> 
+                  <img src={`https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${props.names[index]}_0.jpg`} />
+                  <p>
+                    {JSON.stringify(championData.data[props.names[index]].name, null, 0).replace(/^"+|"+$/g, "") + ", "}
+                    {JSON.stringify(championData.data[props.names[index]].title, null, 0).replace(/^"+|"+$/g, "")}
+                  </p>
+                </div>
+              ) : (
+                <p>Loading...</p>
+              )}
+            </li>
+          )
+        })}
+      </ul>
+    </>
   )
 
 }

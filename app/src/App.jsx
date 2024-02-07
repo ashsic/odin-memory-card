@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <h2>Champion Data</h2>
+      <h1>LoL Memory Game</h1>
       <Card names={champions} />
 
 
